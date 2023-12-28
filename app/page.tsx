@@ -81,7 +81,7 @@ export default function DatePicker() {
         selected={date}
         onSelect={setDate}
         numberOfMonths={2}
-        className="bg-white rounded flex justify-center items-center w-full"
+        className="bg-gray-300 rounded flex justify-center items-center w-full"
       />
 
       <div className="flex gap-3">
@@ -89,25 +89,25 @@ export default function DatePicker() {
           <Input 
             type="number"
             onChange={(e) => setInitialHours(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="h"
           />
           <Input 
             type="number"
             onChange={(e) => setInitialMinutes(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="m"
           />
           <Input 
             type="number"
             onChange={(e) => setInitialSeconds(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="s"
           />
           <Input 
             type="number"
             onChange={(e) => setInitialMilliseconds(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="ms"
           />
         </div>
@@ -118,32 +118,32 @@ export default function DatePicker() {
           <Input 
             type="number"
             onChange={(e) => setFinalHours(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="h"
             
           />
           <Input 
             type="number"
             onChange={(e) => setFinalMinutes(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="m"
           />
           <Input 
             type="number"
             onChange={(e) => setFinalSeconds(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="s"
           />
           <Input 
             type="number"
             onChange={(e) => setFinalMilliseconds(Number(e.target.value))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-gray-300"
             placeholder="ms"
           />
         </div>
       </div>
 
-      <Button className="w-full" onClick={handleSelect}>
+      <Button className="w-full bg-gray-600" onClick={handleSelect}>
         Selecionar
       </Button>
     </div>
