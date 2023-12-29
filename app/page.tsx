@@ -8,14 +8,13 @@ import moment from "moment/moment"
 import { useState } from "react"
 import { DateRange } from "react-day-picker"
 import { addDays } from 'date-fns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function DatePicker() {
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 5),
+    from: new Date(),
+    to: addDays(new Date(), 30),
   })
-  const [timeInicial, setTimeInicial] = useState('')
-  const [timeFinal, setTimeFinal] = useState('')
   const [initialHours, setInitialHours] = useState<number>()
   const [initialMinutes, setInitialMinutes] = useState<number>()
   const [initialSeconds, setInitialSeconds] = useState<number>()
@@ -39,14 +38,14 @@ export default function DatePicker() {
     seconds: number, 
     milliseconds: number
   ) {
-    let initialTime = moment('00:00:00', 'HH:mm:ss');
+    let time = moment(0, 'HH:mm:ss.SSS');
 
-    initialTime = addTime(initialTime, hours, 'hour')
-    initialTime = addTime(initialTime, minutes, 'minute')
-    initialTime = addTime(initialTime, seconds, 'second')
-    initialTime = addTime(initialTime, milliseconds, 'millisecond')
+    time = addTime(time, hours, 'hour')
+    time = addTime(time, minutes, 'minute')
+    time = addTime(time, seconds, 'second')
+    time = addTime(time, milliseconds, 'millisecond')
 
-    return initialTime.format('HH:mm:ss.SSS')
+    return time.format('HH:mm:ss.SSS')
   }
 
   function handleSelect() {
@@ -64,88 +63,109 @@ export default function DatePicker() {
       finalMilliseconds
     )
 
-    const teste = {
-      from: moment(date.from).add(initialTime).toDate(),
-      to: moment(date.to).add(finalTime).toDate()
-    }
+    const initialDateAndTime = moment(date.from).add(initialTime).format('DD-MM-YYYY HH:mm:ss.SSS')
+    const finalDateAndTime = moment(date.to).add(finalTime).format('DD-MM-YYYY HH:mm:ss.SSS')
 
-    console.log(teste)
+    console.log(initialDateAndTime, finalDateAndTime)
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3 p-2">
-      <Calendar
-        initialFocus
-        mode="range"
-        defaultMonth={date?.from}
-        selected={date}
-        onSelect={setDate}
-        numberOfMonths={2}
-        className="bg-gray-300 rounded flex justify-center items-center w-full"
-      />
+    <div className="flex flex-col items-center justify-center gap-5 py-3 px-4 bg-white rounded w-[700px]">
+      <Tabs defaultValue="periodo" className='flex w-full flex-col justify-center'>
+        <TabsList className='flex-1 mb-5'>
+          <TabsTrigger value="periodo" className='flex-1' >Período</TabsTrigger>
+          <TabsTrigger value="snapshots" className='flex-1' >Snapshots</TabsTrigger>
+          <TabsTrigger value="processamento" className='flex-1' >Processamento</TabsTrigger>
+        </TabsList>
 
-      <div className="flex gap-3">
-        <div className="flex gap-2">
-          <Input 
-            type="number"
-            onChange={(e) => setInitialHours(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="h"
+        <TabsContent value="periodo" className='flex flex-col items-center gap-5'>
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
           />
-          <Input 
-            type="number"
-            onChange={(e) => setInitialMinutes(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="m"
-          />
-          <Input 
-            type="number"
-            onChange={(e) => setInitialSeconds(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="s"
-          />
-          <Input 
-            type="number"
-            onChange={(e) => setInitialMilliseconds(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="ms"
-          />
-        </div>
 
-        <div className="w-px bg-gray-400" />
+          <div className="flex gap-3 justify-center">
+            <div className="flex gap-2">
+              <Input 
+                type="number"
+                onChange={(e) => setInitialHours(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="h"
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setInitialMinutes(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="m"
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setInitialSeconds(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="s"
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setInitialMilliseconds(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="ms"
+              />
+            </div>
 
-        <div className="flex gap-2">
-          <Input 
-            type="number"
-            onChange={(e) => setFinalHours(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="h"
-            
-          />
-          <Input 
-            type="number"
-            onChange={(e) => setFinalMinutes(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="m"
-          />
-          <Input 
-            type="number"
-            onChange={(e) => setFinalSeconds(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="s"
-          />
-          <Input 
-            type="number"
-            onChange={(e) => setFinalMilliseconds(Number(e.target.value))}
-            className="w-16 text-center bg-gray-300"
-            placeholder="ms"
-          />
-        </div>
-      </div>
+            <div className="w-px bg-gray-400" />
 
-      <Button className="w-full bg-gray-600" onClick={handleSelect}>
-        Selecionar
-      </Button>
+            <div className="flex gap-2">
+              <Input 
+                type="number"
+                onChange={(e) => setFinalHours(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="h"
+                
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setFinalMinutes(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="m"
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setFinalSeconds(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="s"
+              />
+              <Input 
+                type="number"
+                onChange={(e) => setFinalMilliseconds(Number(e.target.value))}
+                className="w-16 text-center"
+                placeholder="ms"
+              />
+            </div>
+          </div>
+
+          <div className='self-end flex gap-2'>
+            <Button variant='secondary'>
+              Cancelar
+            </Button>
+
+            <Button onClick={handleSelect}>
+              Aplicar
+            </Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="snapshots">
+          Change your password here.
+        </TabsContent>
+
+        <TabsContent value="processamento">
+          Change your password here.
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
