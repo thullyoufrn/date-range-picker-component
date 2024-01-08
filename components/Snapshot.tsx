@@ -1,14 +1,63 @@
+import clsx from "clsx";
+import { Check, Clock, X } from "lucide-react";
+import { RequestStatus } from "./Processing";
 import { Toggle } from "./ui/toggle";
 
-export default function Snapshot({ pressed }: { pressed: boolean }) {
+type Snapshot = {
+  id: number
+  period: string
+  status?: string
+}
+
+interface SnapshotProps {
+  snapshot: Snapshot
+  snapshotPressed: number
+  onPressedChange: (id: number) => void
+}
+
+export default function Snapshot({ 
+  snapshot, 
+  snapshotPressed,
+  onPressedChange,
+}: SnapshotProps) {
+  function handlePressedChange() {
+    onPressedChange(snapshot.id)
+  }
+
   return (
-    <Toggle 
-      className="font-normal" 
-      variant="outline" 
-      aria-label="Toggle italic"
-      pressed={pressed}
-    >
-      29-12-2023 12:20:58.886 - 28-01-2024 12:20:58.886
-    </Toggle>
+    <div className="flex gap-5 items-center">
+      <Toggle 
+        className="font-normal flex-1" 
+        variant="outline" 
+        pressed={snapshot.id === snapshotPressed}
+        onPressedChange={handlePressedChange}
+      >
+        {snapshot.period}
+      </Toggle>
+
+      <X className={clsx(
+          {
+            "text-red-500": snapshot.status === RequestStatus.CANCELED,
+            "hidden": !(snapshot.status === RequestStatus.CANCELED)
+          }
+        )} 
+      />
+
+      <Clock className={clsx(
+          {
+            "text-yellow-500": snapshot.status === RequestStatus.PENDING,
+            "hidden": !(snapshot.status === RequestStatus.PENDING)
+          }
+        )} 
+      />
+
+      <Check className={clsx(
+          {
+            "text-emerald-500": snapshot.status === RequestStatus.COMPLETED,
+            "hidden": !(snapshot.status === RequestStatus.COMPLETED)
+          }
+        )} 
+      />
+    </div>
   )
 }

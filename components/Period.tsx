@@ -1,154 +1,147 @@
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Input } from "@/components/ui/input"
+import { preSelectedPeriods } from "@/lib/date-functions"
 import { addDays } from "date-fns"
+import { ArrowRight } from "lucide-react"
 import moment from "moment/moment"
 import { useState } from "react"
-import { DateRange } from "react-day-picker"
-import { DaySelect, MonthsSelect, YearsSelect } from "./DayMonthYearSelects"
+import InputMask from 'react-input-mask'
+import { Calendar } from "./ui/calendar"
+
+export interface DateRange {
+  from: Date | null
+  to: Date | null
+}
+
+interface TimeRange {
+  from: string | null
+  to: string | null
+}
 
 export default function Period() {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 30),
+  const [date, setDate] = useState<DateRange>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
   })
-  const [initialHours, setInitialHours] = useState<number>()
-  const [initialMinutes, setInitialMinutes] = useState<number>()
-  const [initialSeconds, setInitialSeconds] = useState<number>()
-  const [initialMilliseconds, setInitialMilliseconds] = useState<number>()
-  const [finalHours, setFinalHours] = useState<number>()
-  const [finalMinutes, setFinalMinutes] = useState<number>()
-  const [finalSeconds, setFinalSeconds] = useState<number>()
-  const [finalMilliseconds, setFinalMilliseconds] = useState<number>()
 
-  type addType = "hour" | "minute" | "second" | "millisecond"
+  const [time, setTime] = useState<TimeRange>({
+    from: "00:00:00.000",
+    to: "00:00:00.000",
+  })
 
-  function addTime(initialValue: any, valueToAdd: number, typeToAdd: addType) {
-    const startTime = moment(initialValue, 'HH:mm:ss.SSS');
-    const newTime = startTime.add(valueToAdd, typeToAdd);
-    return newTime
-  }
+  const [ preSelectedPeriod, setPreSelectedPeriod ] = useState<number | null>(1)
 
-  function calculateTime(
-    hours: number, 
-    minutes: number, 
-    seconds: number, 
-    milliseconds: number
-  ) {
-    let time = moment(0, 'HH:mm:ss.SSS');
+  function handleApply() { 
+    const initialDateInMilliseconds = date.from.getTime()
+    const finalDateInMilliseconds = date.to.getTime()
+    const initialTimeInMilliseconds = moment.duration(time.from).asMilliseconds()
+    const finalTimeInMilliseconds = moment.duration(time.to).asMilliseconds()
 
-    time = addTime(time, hours, 'hour')
-    time = addTime(time, minutes, 'minute')
-    time = addTime(time, seconds, 'second')
-    time = addTime(time, milliseconds, 'millisecond')
+    const initialDateAndTime = moment(initialDateInMilliseconds)
+      .add(initialTimeInMilliseconds)
+      .toDate()
+      .toISOString()
 
-    return time.format('HH:mm:ss.SSS')
-  }
+    const finalDateAndTime = moment(finalDateInMilliseconds)
+      .add(finalTimeInMilliseconds)
+      .toDate()
+      .toISOString()
 
-  function handleSelect() {
-    const initialTime = calculateTime(
-      initialHours, 
-      initialMinutes, 
-      initialSeconds, 
-      initialMilliseconds
-    )
+    const period = {
+      from: initialDateAndTime,
+      to: finalDateAndTime,
+    }
 
-    const finalTime = calculateTime(
-      finalHours, 
-      finalMinutes, 
-      finalSeconds, 
-      finalMilliseconds
-    )
-
-    const initialDateAndTime = moment(date.from).add(initialTime).format('DD-MM-YYYY HH:mm:ss.SSS')
-    const finalDateAndTime = moment(date.to).add(finalTime).format('DD-MM-YYYY HH:mm:ss.SSS')
-
-    console.log(initialDateAndTime, finalDateAndTime)
+    console.log(period)
   }
 
   return (
-    <div className="flex flex-col items-center gap-5">
-      <div className="flex w-full gap-5">
-        <div className="flex-1 flex gap-2">
-          <YearsSelect />
-          <MonthsSelect />
-          <DaySelect />
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex gap-5">
+        <div className="flex flex-col">
+          {preSelectedPeriods.map(({ id, label, action }) => {
+            function handleClickButton() {
+              const period = action()
+              setDate(period)
+              setPreSelectedPeriod(id)
+            }
+
+            return (
+              <Button 
+                key={label} 
+                variant={id === preSelectedPeriod ? "secondary" : "ghost"}
+                className="flex font-normal justify-start"
+                onClick={handleClickButton}  
+              >
+                {label}
+              </Button>
+            )
+          })}
         </div>
 
-        <div className="w-px bg-gray-500" />
+        {/* Divider */}
+        <div className="w-px bg-slate-300" />
 
-        <div className="flex-1 flex gap-2">
-          <YearsSelect />
-          <MonthsSelect />
-          <DaySelect />
-        </div>
-      </div>
-
-      <Calendar
-        initialFocus
-        mode="range"
-        defaultMonth={date?.from}
-        selected={date}
-        onSelect={setDate}
-        numberOfMonths={2}
-      />
-      
-      <div className="flex gap-5 justify-center">
-        <div className="flex gap-2">
-          <Input
-            type="number"
-            onChange={(e) => setInitialHours(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="h"
-          />
-          <Input
-            type="number"
-            onChange={(e) => setInitialMinutes(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="m"
-          />
-          <Input
-            type="number"
-            onChange={(e) => setInitialSeconds(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="s"
-          />
-          <Input
-            type="number"
-            onChange={(e) => setInitialMilliseconds(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="ms"
-          />
-        </div>
-
-        <div className="w-px bg-gray-500" />
-
-        <div className="flex gap-2">
-          <Input
-            type="number"
-            onChange={(e) => setFinalHours(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="h"
-      
-          />
-          <Input
-            type="number"
-            onChange={(e) => setFinalMinutes(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="m"
-          />
-          <Input
-            type="number"
-            onChange={(e) => setFinalSeconds(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="s"
-          />
-          <Input
-            type="number"
-            onChange={(e) => setFinalMilliseconds(Number(e.target.value))}
-            className="w-16 text-center"
-            placeholder="ms"
-          />
+        <div className="flex flex-col gap-1">
+          <div className="flex w-full gap-3 justify-center items-center">
+            <InputMask
+              mask="99/99/9999"
+              placeholder="dd/mm/aaaa"
+              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              onChange={(e) => {
+                const startDate = moment.utc(e.target.value, 'DD/MM/YYYY').toDate()
+                setDate((state) => {
+                  return { ...state, from: startDate }
+                })
+              }}
+            />
+            <ArrowRight className="text-slate-400 w-10" />
+            <InputMask
+              mask="99/99/9999"
+              placeholder="dd/mm/aaaa"
+              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              onChange={(e) => {
+                const endDate = moment.utc(e.target.value, 'DD/MM/YYYY').toDate()
+                setDate((state) => {
+                  return { ...state, to: endDate }
+                })
+              }}
+            />
+          </div>
+          
+          {/* <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          /> */}
+          
+          <div className="flex w-full gap-3 justify-center items-center">
+            <InputMask
+              mask="99:99:99.999"
+              placeholder="00:00:00.000"
+              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              onChange={(e) => {
+                const startTime = e.target.value
+                setTime((state) => {
+                  return { ...state, from: startTime }
+                })
+              }}
+            />
+            <ArrowRight className="text-slate-400 w-10" />
+            <InputMask
+              mask="99:99:99.999"
+              placeholder="00:00:00.000"
+              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              onChange={(e) => {
+                const endTime = e.target.value
+                setTime((state) => {
+                  return { ...state, to: endTime }
+                })
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -157,7 +150,7 @@ export default function Period() {
           Cancelar
         </Button>
 
-        <Button onClick={handleSelect}>
+        <Button onClick={handleApply}>
           Aplicar
         </Button>
       </div>
