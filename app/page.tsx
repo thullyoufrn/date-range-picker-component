@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function DatePicker() {
   return (
     <div className="p-5 bg-white rounded">
-      <Tabs defaultValue="processamento" className='flex flex-col gap-5 min-w-[760px]'>
+      <Tabs defaultValue="periodo" className='flex flex-col gap-5 min-w-[760px]'>
         <TabsList>
           <TabsTrigger value="periodo" className='flex-1' >Período</TabsTrigger>
           <TabsTrigger value="snapshots" className='flex-1' >Snapshots</TabsTrigger>
