@@ -1,48 +1,47 @@
 import { Button } from "@/components/ui/button"
-import { preSelectedPeriods } from "@/lib/date-functions"
+import { DateRange, preSelectedPeriods } from "@/lib/date-functions"
 import { ArrowRight } from "lucide-react"
 import moment from "moment/moment"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import InputMask from 'react-input-mask'
 
-export interface DateRange {
-  from: Date | null
-  to: Date | null
-}
-
-interface TimeRange {
-  from: string | null
-  to: string | null
-}
-
-export default function Period() {
-  const [preSelectedPeriod, setPreSelectedPeriod] = useState<number | null>(null)
-
+export default function Period({
+  onChangePeriod 
+}: { onChangePeriod: (newPeriod: DateRange) => void }) {
+  const [ preSelectedPeriod, setPreSelectedPeriod ] = useState<number | null>(null)
   const { register, handleSubmit, setValue } = useForm()
 
-  function handleApply(data: any) { 
-    // const initialDateInMilliseconds = date.from.getTime()
-    // const finalDateInMilliseconds = date.to.getTime()
-    // const initialTimeInMilliseconds = moment.duration(time.from).asMilliseconds()
-    // const finalTimeInMilliseconds = moment.duration(time.to).asMilliseconds()
+  function handleClickPreSelectedPeriod(
+    id: number, 
+    action: () => DateRange
+  ) {
+    const period = action()
 
-    // const initialDateAndTime = moment(initialDateInMilliseconds)
-    //   .add(initialTimeInMilliseconds)
-    //   .toDate()
-    //   .toISOString()
+    setValue('dateFrom', moment(period.from).format("DD/MM/YYYY"))
+    setValue('dateTo', moment(period.to).format("DD/MM/YYYY"))
+    setValue('timeFrom', moment(period.from).format('HH:mm:ss.SSS'))
+    setValue('timeTo', moment(period.to).format('HH:mm:ss.SSS'))
+    
+    setPreSelectedPeriod(id)
+  }
 
-    // const finalDateAndTime = moment(finalDateInMilliseconds)
-    //   .add(finalTimeInMilliseconds)
-    //   .toDate()
-    //   .toISOString()
+  function handleApply(data: any) {
+    const startDateString = data.dateFrom + " " + data.timeFrom;
+    const endDateString = data.dateTo + " " + data.timeTo; 
 
-    // const period = {
-    //   from: initialDateAndTime,
-    //   to: finalDateAndTime,
-    // }
+    const startDateMoment = moment(startDateString, "DD/MM/YYYY HH:mm:ss.SSS");
+    const endDateMoment = moment(endDateString, "DD/MM/YYYY HH:mm:ss.SSS");
+    const startDate = startDateMoment.toDate()
+    const endDate = startDateMoment.toDate()
 
-    console.log(data)
+    // Update PopoverTrigger
+    const newPopoverPeriod = { from: startDate, to: endDate }
+    onChangePeriod(newPopoverPeriod)
+
+    // Data for the HTTP request (ISOString)
+    const requestDateFrom = startDateMoment.toISOString()
+    const requestDateTo = endDateMoment.toISOString()
   }
 
   return (
@@ -51,21 +50,12 @@ export default function Period() {
         {/* Pre-selected times */}
         <div className="flex flex-col">
           {preSelectedPeriods.map(({ id, label, action }) => {
-            function handleClickButton() {
-              const period = action()
-              setPreSelectedPeriod(id)
-              setValue('date-from', moment(period.from).format("DD/MM/YYYY"))
-              setValue('date-to', moment(period.to).format("DD/MM/YYYY"))
-              setValue('time-from', moment(period.from).format('HH:mm:ss.SSS'))
-              setValue('time-to', moment(period.to).format('HH:mm:ss.SSS'))
-            }
-
             return (
               <Button 
                 key={id} 
                 variant={id === preSelectedPeriod ? "secondary" : "ghost"}
                 className="flex font-normal justify-start"
-                onClick={handleClickButton}  
+                onClick={() => handleClickPreSelectedPeriod(id, action)}  
               >
                 {label}
               </Button>
@@ -87,14 +77,14 @@ export default function Period() {
               mask="99/99/9999"
               placeholder="dd/mm/aaaa"
               className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-              {...register('date-from')}
+              {...register('dateFrom')}
             />
             <ArrowRight className="text-slate-400 w-10" />
             <InputMask
               mask="99/99/9999"
               placeholder="dd/mm/aaaa"
               className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-              {...register('date-to')}
+              {...register('dateTo')}
             />
           </div>
 
@@ -110,14 +100,14 @@ export default function Period() {
               mask="99:99:99.999"
               placeholder="00:00:00.000"
               className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-              {...register('time-from')}
+              {...register('timeFrom')}
             />
             <ArrowRight className="text-slate-400 w-10" />
             <InputMask
               mask="99:99:99.999"
               placeholder="00:00:00.000"
               className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-              {...register('time-to')}
+              {...register('timeTo')}
             />
           </div>
         </form>

@@ -1,11 +1,15 @@
-import { DateRange } from '@/components/Period';
 import moment from 'moment';
 
+export interface DateRange {
+  from: Date | null,
+  to: Date | null,
+}
+
 // Função para obter o período de hoje
-function getTodayPeriod(): DateRange {
+export function getTodayPeriod(): DateRange {
   const now = moment();
   const from = now.clone().startOf('day').toDate();
-  const to = now.clone().toDate();
+  const to = now.clone().endOf('day').toDate();
   return { from, to };
 }
 
@@ -63,6 +67,30 @@ function getLastYearPeriod(): DateRange {
   const from = today.clone().subtract(1, 'year').startOf('year').toDate();
   const to = today.clone().subtract(1, 'year').endOf('year').toDate();
   return { from, to };
+}
+
+/* Função para formatar um date range para  
+o modelo utilizado nos snapshots e popover */
+export function formatPeriodToSnapshot(
+  dateFrom: string,
+  timeFrom: string,
+  dateTo: string,
+  timeTo: string,
+) {
+  const dateTimeFormat = "DD/MM/YYYY HH:mm:ss.SSS"
+
+  const startDateString = dateFrom + " " + timeFrom;
+  const endDateString = dateTo + " " + timeTo;
+
+  const startDateMoment = moment(startDateString, dateTimeFormat);
+  const endDateMoment = moment(endDateString, dateTimeFormat);
+  
+  const dateRangeString =
+    startDateMoment.format("DD-MM-YYYY HH:mm:ss.SSS")
+    + " - "
+    + endDateMoment.format("DD-MM-YYYY HH:mm:ss.SSS");
+
+  return dateRangeString
 }
 
 export const preSelectedPeriods = [
