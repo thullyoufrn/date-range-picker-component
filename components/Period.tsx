@@ -1,37 +1,38 @@
-import { Button } from "@/components/ui/button"
-import { DateRange, preSelectedPeriods } from "@/lib/date-functions"
-import { ArrowRight } from "lucide-react"
-import moment from "moment/moment"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Button } from '@/components/ui/button'
+import { DateRange, preSelectedPeriods } from '@/lib/date-functions'
+import { ArrowRight } from 'lucide-react'
+import moment from 'moment/moment'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
 
 export default function Period({
-  onChangePeriod 
-}: { onChangePeriod: (newPeriod: DateRange) => void }) {
-  const [ preSelectedPeriod, setPreSelectedPeriod ] = useState<number | null>(null)
+  onChangePeriod,
+}: {
+  onChangePeriod: (newPeriod: DateRange) => void
+}) {
+  const [preSelectedPeriod, setPreSelectedPeriod] = useState<number | null>(
+    null,
+  )
   const { register, handleSubmit, setValue } = useForm()
 
-  function handleClickPreSelectedPeriod(
-    id: number, 
-    action: () => DateRange
-  ) {
+  function handleClickPreSelectedPeriod(id: number, action: () => DateRange) {
     const period = action()
 
-    setValue('dateFrom', moment(period.from).format("DD/MM/YYYY"))
-    setValue('dateTo', moment(period.to).format("DD/MM/YYYY"))
+    setValue('dateFrom', moment(period.from).format('DD/MM/YYYY'))
+    setValue('dateTo', moment(period.to).format('DD/MM/YYYY'))
     setValue('timeFrom', moment(period.from).format('HH:mm:ss.SSS'))
     setValue('timeTo', moment(period.to).format('HH:mm:ss.SSS'))
-    
+
     setPreSelectedPeriod(id)
   }
 
   function handleApply(data: any) {
-    const startDateString = data.dateFrom + " " + data.timeFrom;
-    const endDateString = data.dateTo + " " + data.timeTo; 
+    const startDateString = data.dateFrom + ' ' + data.timeFrom
+    const endDateString = data.dateTo + ' ' + data.timeTo
 
-    const startDateMoment = moment(startDateString, "DD/MM/YYYY HH:mm:ss.SSS");
-    const endDateMoment = moment(endDateString, "DD/MM/YYYY HH:mm:ss.SSS");
+    const startDateMoment = moment(startDateString, 'DD/MM/YYYY HH:mm:ss.SSS')
+    const endDateMoment = moment(endDateString, 'DD/MM/YYYY HH:mm:ss.SSS')
     const startDate = startDateMoment.toDate()
     const endDate = startDateMoment.toDate()
 
@@ -51,11 +52,11 @@ export default function Period({
         <div className="flex flex-col">
           {preSelectedPeriods.map(({ id, label, action }) => {
             return (
-              <Button 
-                key={id} 
-                variant={id === preSelectedPeriod ? "secondary" : "ghost"}
+              <Button
+                key={id}
+                variant={id === preSelectedPeriod ? 'secondary' : 'ghost'}
                 className="flex font-normal justify-start"
-                onClick={() => handleClickPreSelectedPeriod(id, action)}  
+                onClick={() => handleClickPreSelectedPeriod(id, action)}
               >
                 {label}
               </Button>
@@ -68,7 +69,7 @@ export default function Period({
 
         <form
           id="date-range-form"
-          onSubmit={handleSubmit(handleApply)} 
+          onSubmit={handleSubmit(handleApply)}
           className="flex flex-col gap-3"
         >
           {/* Date inputs */}
@@ -93,7 +94,7 @@ export default function Period({
             <div className="flex-1 h-full bg-slate-100 rounded" />
             <div className="flex-1 h-full bg-slate-100 rounded" />
           </div>
-          
+
           {/* Time inputs */}
           <div className="flex w-full gap-3 justify-center items-center">
             <InputMask
@@ -114,10 +115,8 @@ export default function Period({
       </div>
 
       {/* Buttons */}
-      <div className='self-end flex mt-3 gap-2'>
-        <Button variant='secondary'>
-          Cancelar
-        </Button>
+      <div className="self-end flex mt-3 gap-2">
+        <Button variant="secondary">Cancelar</Button>
 
         <Button form="date-range-form" type="submit">
           Aplicar

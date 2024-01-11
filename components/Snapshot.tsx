@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import { Check, Clock, X } from "lucide-react";
-import { RequestStatus } from "./Processing";
-import { Toggle } from "./ui/toggle";
+import clsx from 'clsx'
+import { Check, Clock, X } from 'lucide-react'
+import { RequestStatus } from './Processing'
+import { Toggle } from './ui/toggle'
 
 type Snapshot = {
   id: number
@@ -15,8 +15,8 @@ interface SnapshotProps {
   onPressedChange: (id: number) => void
 }
 
-export default function Snapshot({ 
-  snapshot, 
+export default function Snapshot({
+  snapshot,
   snapshotPressed,
   onPressedChange,
 }: SnapshotProps) {
@@ -26,37 +26,34 @@ export default function Snapshot({
 
   return (
     <div className="flex gap-5 items-center">
-      <Toggle 
-        className="font-normal flex-1" 
-        variant="outline" 
+      <Toggle
+        className="font-normal flex-1"
+        variant="outline"
         pressed={snapshot.id === snapshotPressed}
         onPressedChange={handlePressedChange}
       >
         {snapshot.period}
       </Toggle>
 
-      <X className={clsx(
-          {
-            "text-red-500": snapshot.status === RequestStatus.CANCELED,
-            "hidden": !(snapshot.status === RequestStatus.CANCELED)
-          }
-        )} 
+      <X
+        className={clsx({
+          'text-red-500': snapshot.status === RequestStatus.CANCELED,
+          hidden: !(snapshot.status === RequestStatus.CANCELED),
+        })}
       />
 
-      <Clock className={clsx(
-          {
-            "text-yellow-500": snapshot.status === RequestStatus.PENDING,
-            "hidden": !(snapshot.status === RequestStatus.PENDING)
-          }
-        )} 
+      <Clock
+        className={clsx({
+          'text-yellow-500': snapshot.status === RequestStatus.PENDING,
+          hidden: !(snapshot.status === RequestStatus.PENDING),
+        })}
       />
 
-      <Check className={clsx(
-          {
-            "text-emerald-500": snapshot.status === RequestStatus.COMPLETED,
-            "hidden": !(snapshot.status === RequestStatus.COMPLETED)
-          }
-        )} 
+      <Check
+        className={clsx({
+          'text-emerald-500': snapshot.status === RequestStatus.COMPLETED,
+          hidden: !(snapshot.status === RequestStatus.COMPLETED),
+        })}
       />
     </div>
   )
