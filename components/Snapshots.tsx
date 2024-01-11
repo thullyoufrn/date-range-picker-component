@@ -39,7 +39,7 @@ export default function Snapshots() {
   }
 
   return (
-    <div className="gap-5 flex flex-col">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
         {snapshotObjects.map((snapshot, index) => {
           return (
@@ -53,7 +53,7 @@ export default function Snapshots() {
         })}
       </div>
 
-      <div className="self-end flex mt-3 gap-2">
+      <div className="mt-3 flex gap-2 self-end">
         <Button variant="secondary">Cancelar</Button>
 
         <Button disabled={!snapshotPressed} onClick={handleApply}>

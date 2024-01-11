@@ -55,7 +55,7 @@ export default function Period({
               <Button
                 key={id}
                 variant={id === preSelectedPeriod ? 'secondary' : 'ghost'}
-                className="flex font-normal justify-start"
+                className="flex justify-start font-normal"
                 onClick={() => handleClickPreSelectedPeriod(id, action)}
               >
                 {label}
@@ -73,41 +73,41 @@ export default function Period({
           className="flex flex-col gap-3"
         >
           {/* Date inputs */}
-          <div className="flex w-full gap-3 justify-center items-center">
+          <div className="flex w-full items-center justify-center gap-3">
             <InputMask
               mask="99/99/9999"
               placeholder="dd/mm/aaaa"
-              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('dateFrom')}
             />
-            <ArrowRight className="text-slate-400 w-10" />
+            <ArrowRight className="w-10 text-slate-400" />
             <InputMask
               mask="99/99/9999"
               placeholder="dd/mm/aaaa"
-              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('dateTo')}
             />
           </div>
 
           {/* Calendar Skeleton */}
           <div className="flex h-full gap-10">
-            <div className="flex-1 h-full bg-slate-100 rounded" />
-            <div className="flex-1 h-full bg-slate-100 rounded" />
+            <div className="h-full flex-1 rounded bg-slate-100" />
+            <div className="h-full flex-1 rounded bg-slate-100" />
           </div>
 
           {/* Time inputs */}
-          <div className="flex w-full gap-3 justify-center items-center">
+          <div className="flex w-full items-center justify-center gap-3">
             <InputMask
               mask="99:99:99.999"
               placeholder="00:00:00.000"
-              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('timeFrom')}
             />
-            <ArrowRight className="text-slate-400 w-10" />
+            <ArrowRight className="w-10 text-slate-400" />
             <InputMask
               mask="99:99:99.999"
               placeholder="00:00:00.000"
-              className="text-center outline-none flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('timeTo')}
             />
           </div>
@@ -115,7 +115,7 @@ export default function Period({
       </div>
 
       {/* Buttons */}
-      <div className="self-end flex mt-3 gap-2">
+      <div className="mt-3 flex gap-2 self-end">
         <Button variant="secondary">Cancelar</Button>
 
         <Button form="date-range-form" type="submit">

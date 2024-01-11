@@ -57,10 +57,10 @@ export default function DatePicker() {
         </PopoverTrigger>
 
         <PopoverContent className="w-auto p-0" align="start">
-          <div className="p-5 bg-white rounded">
+          <div className="rounded bg-white p-5">
             <Tabs
               defaultValue="periodo"
-              className="flex flex-col gap-5 min-w-[760px]"
+              className="flex min-w-[760px] flex-col gap-5"
             >
               <TabsList>
                 <TabsTrigger value="periodo" className="flex-1">

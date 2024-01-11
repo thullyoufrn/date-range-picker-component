@@ -25,9 +25,9 @@ export default function Snapshot({
   }
 
   return (
-    <div className="flex gap-5 items-center">
+    <div className="flex items-center gap-5">
       <Toggle
-        className="font-normal flex-1"
+        className="flex-1 font-normal"
         variant="outline"
         pressed={snapshot.id === snapshotPressed}
         onPressedChange={handlePressedChange}
