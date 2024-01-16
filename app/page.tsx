@@ -10,22 +10,23 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { DateRange, formatPeriodToSnapshot } from '@/lib/date-functions'
+import { formatPeriodToSnapshot } from '@/lib/date-functions'
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import moment from 'moment'
 import { useState } from 'react'
+import * as ReactDayPicker from 'react-day-picker'
 
 export default function DatePicker() {
-  const [period, setPeriod] = useState<DateRange>({
-    from: new Date(2001, 5, 15),
-    to: new Date(2001, 5, 16),
+  const [popoverPeriod, setPeriod] = useState<ReactDayPicker.DateRange>({
+    from: moment(new Date()).startOf('day').toDate(),
+    to: moment(new Date()).endOf('day').toDate(),
   })
 
-  const dateFrom = moment(period.from).format('DD/MM/YYYY')
-  const timeFrom = moment(period.from).format('HH:mm:ss.SSS')
-  const dateTo = moment(period.to).format('DD/MM/YYYY')
-  const timeTo = moment(period.from).format('HH:mm:ss.SSS')
+  const dateFrom = moment(popoverPeriod.from).format('DD/MM/YYYY')
+  const timeFrom = moment(popoverPeriod.from).format('HH:mm:ss.SSS')
+  const dateTo = moment(popoverPeriod.to).format('DD/MM/YYYY')
+  const timeTo = moment(popoverPeriod.to).format('HH:mm:ss.SSS')
 
   const formattedPeriod = formatPeriodToSnapshot(
     dateFrom,
@@ -34,7 +35,7 @@ export default function DatePicker() {
     timeTo,
   )
 
-  function changeDatePickerPeriod(newPeriod: DateRange) {
+  function changePeriod(newPeriod: ReactDayPicker.DateRange) {
     setPeriod(newPeriod)
   }
 
@@ -47,7 +48,7 @@ export default function DatePicker() {
             variant={'outline'}
             className={cn(
               'min-w-[300px] justify-start text-left font-normal',
-              !period && 'text-muted-foreground',
+              !popoverPeriod && 'text-muted-foreground',
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -75,7 +76,10 @@ export default function DatePicker() {
               </TabsList>
 
               <TabsContent value="periodo">
-                <Period onChangePeriod={changeDatePickerPeriod} />
+                <Period
+                  popoverPeriod={popoverPeriod}
+                  onChangePeriod={changePeriod}
+                />
               </TabsContent>
 
               <TabsContent value="processamento">

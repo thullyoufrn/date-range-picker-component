@@ -1,12 +1,8 @@
 import moment from 'moment'
-
-export interface DateRange {
-  from: Date | null
-  to: Date | null
-}
+import * as ReactDayPicker from 'react-day-picker'
 
 // Função para obter o período de hoje
-export function getTodayPeriod(): DateRange {
+export function getTodayPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().startOf('day').toDate()
   const to = now.clone().endOf('day').toDate()
@@ -14,7 +10,7 @@ export function getTodayPeriod(): DateRange {
 }
 
 // Função para obter o período de ontem
-function getYesterdayPeriod(): DateRange {
+function getYesterdayPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().subtract(1, 'day').startOf('day').toDate()
   const to = now.clone().subtract(1, 'day').endOf('day').toDate()
@@ -22,7 +18,7 @@ function getYesterdayPeriod(): DateRange {
 }
 
 // Função para obter o período dos últimos 7 dias
-function getLast7DaysPeriod(): DateRange {
+function getLast7DaysPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().subtract(6, 'days').startOf('day').toDate()
   const to = now.toDate()
@@ -30,7 +26,7 @@ function getLast7DaysPeriod(): DateRange {
 }
 
 // Função para obter o período dos últimos 30 dias
-function getLast30DaysPeriod(): DateRange {
+function getLast30DaysPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(29, 'days').startOf('day').toDate()
   const to = today.toDate()
@@ -38,7 +34,7 @@ function getLast30DaysPeriod(): DateRange {
 }
 
 // Função para obter o período deste mês
-function getThisMonthPeriod(): DateRange {
+function getThisMonthPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().startOf('month').toDate()
   const to = today.toDate()
@@ -46,7 +42,7 @@ function getThisMonthPeriod(): DateRange {
 }
 
 // Função para obter o período do último mês
-function getLastMonthPeriod(): DateRange {
+function getLastMonthPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(1, 'month').startOf('month').toDate()
   const to = today.clone().subtract(1, 'month').endOf('month').toDate()
@@ -54,7 +50,7 @@ function getLastMonthPeriod(): DateRange {
 }
 
 // Função para obter o período deste ano
-function getThisYearPeriod(): DateRange {
+function getThisYearPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().startOf('year').toDate()
   const to = today.toDate()
@@ -62,7 +58,7 @@ function getThisYearPeriod(): DateRange {
 }
 
 // Função para obter o período do último ano
-function getLastYearPeriod(): DateRange {
+function getLastYearPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(1, 'year').startOf('year').toDate()
   const to = today.clone().subtract(1, 'year').endOf('year').toDate()
@@ -93,45 +89,45 @@ export function formatPeriodToSnapshot(
   return dateRangeString
 }
 
-export const preSelectedPeriods = [
+export const shortcutPeriods = [
   {
     id: 1,
     label: 'Hoje',
-    action: getTodayPeriod,
+    generatePeriod: getTodayPeriod,
   },
   {
     id: 2,
     label: 'Ontem',
-    action: getYesterdayPeriod,
+    generatePeriod: getYesterdayPeriod,
   },
   {
     id: 3,
     label: 'Últimos 7 dias',
-    action: getLast7DaysPeriod,
+    generatePeriod: getLast7DaysPeriod,
   },
   {
     id: 4,
     label: 'Últimos 30 dias',
-    action: getLast30DaysPeriod,
+    generatePeriod: getLast30DaysPeriod,
   },
   {
     id: 5,
     label: 'Este mês',
-    action: getThisMonthPeriod,
+    generatePeriod: getThisMonthPeriod,
   },
   {
     id: 6,
     label: 'Último mês',
-    action: getLastMonthPeriod,
+    generatePeriod: getLastMonthPeriod,
   },
   {
     id: 7,
     label: 'Este ano',
-    action: getThisYearPeriod,
+    generatePeriod: getThisYearPeriod,
   },
   {
     id: 8,
     label: 'Último ano',
-    action: getLastYearPeriod,
+    generatePeriod: getLastYearPeriod,
   },
 ]

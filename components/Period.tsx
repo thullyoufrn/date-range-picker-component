@@ -1,65 +1,86 @@
 import { Button } from '@/components/ui/button'
-import { DateRange, preSelectedPeriods } from '@/lib/date-functions'
+import { shortcutPeriods } from '@/lib/date-functions'
+import { PopoverClose } from '@radix-ui/react-popover'
 import { ArrowRight } from 'lucide-react'
 import moment from 'moment/moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { DateRange } from 'react-day-picker'
 import { useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
+import { Calendar } from './ui/calendar'
 
-export default function Period({
-  onChangePeriod,
-}: {
+interface PeriodProps {
+  popoverPeriod: DateRange
   onChangePeriod: (newPeriod: DateRange) => void
-}) {
-  const [preSelectedPeriod, setPreSelectedPeriod] = useState<number | null>(
-    null,
-  )
+}
+
+export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
+  const [date, setDate] = useState<DateRange>(popoverPeriod)
   const { register, handleSubmit, setValue } = useForm()
 
-  function handleClickPreSelectedPeriod(id: number, action: () => DateRange) {
-    const period = action()
+  function handleClickShortcutPeriod(generatePeriod: () => DateRange) {
+    const period = generatePeriod()
+    setDate(period)
 
-    setValue('dateFrom', moment(period.from).format('DD/MM/YYYY'))
-    setValue('dateTo', moment(period.to).format('DD/MM/YYYY'))
-    setValue('timeFrom', moment(period.from).format('HH:mm:ss.SSS'))
-    setValue('timeTo', moment(period.to).format('HH:mm:ss.SSS'))
+    // Make the HTTP Request here
+    const startDateMoment = moment(period.from, 'DD/MM/YYYY HH:mm:ss.SSS')
+    const endDateMoment = moment(period.to, 'DD/MM/YYYY HH:mm:ss.SSS')
+    const ISODateFrom = startDateMoment.toISOString()
+    const ISODateTo = endDateMoment.toISOString()
 
-    setPreSelectedPeriod(id)
+    console.log({
+      from: ISODateFrom,
+      to: ISODateTo,
+    })
   }
 
   function handleApply(data: any) {
     const startDateString = data.dateFrom + ' ' + data.timeFrom
     const endDateString = data.dateTo + ' ' + data.timeTo
-
     const startDateMoment = moment(startDateString, 'DD/MM/YYYY HH:mm:ss.SSS')
     const endDateMoment = moment(endDateString, 'DD/MM/YYYY HH:mm:ss.SSS')
     const startDate = startDateMoment.toDate()
-    const endDate = startDateMoment.toDate()
+    const endDate = endDateMoment.toDate()
 
-    // Update PopoverTrigger
-    const newPopoverPeriod = { from: startDate, to: endDate }
-    onChangePeriod(newPopoverPeriod)
+    setDate({
+      from: startDate,
+      to: endDate,
+    })
 
-    // Data for the HTTP request (ISOString)
-    const requestDateFrom = startDateMoment.toISOString()
-    const requestDateTo = endDateMoment.toISOString()
+    // Make the HTTP Request here
+    const ISODateFrom = startDateMoment.toISOString()
+    const ISODateTo = endDateMoment.toISOString()
+
+    console.log({
+      from: ISODateFrom,
+      to: ISODateTo,
+    })
   }
+
+  useEffect(() => {
+    onChangePeriod(date)
+    setValue('dateFrom', moment(popoverPeriod.from).format('DD/MM/YYYY'))
+    setValue('dateTo', moment(popoverPeriod.to).format('DD/MM/YYYY'))
+    setValue('timeFrom', moment(popoverPeriod.from).format('HH:mm:ss.SSS'))
+    setValue('timeTo', moment(popoverPeriod.to).format('HH:mm:ss.SSS'))
+  }, [date, onChangePeriod, popoverPeriod, setValue])
 
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex gap-5">
-        {/* Pre-selected times */}
+        {/* Shortcut periods */}
         <div className="flex flex-col">
-          {preSelectedPeriods.map(({ id, label, action }) => {
+          {shortcutPeriods.map(({ id, label, generatePeriod }) => {
             return (
-              <Button
-                key={id}
-                variant={id === preSelectedPeriod ? 'secondary' : 'ghost'}
-                className="flex justify-start font-normal"
-                onClick={() => handleClickPreSelectedPeriod(id, action)}
-              >
-                {label}
-              </Button>
+              <PopoverClose key={id}>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleClickShortcutPeriod(generatePeriod)}
+                  className="flex w-full justify-start font-normal"
+                >
+                  {label}
+                </Button>
+              </PopoverClose>
             )
           })}
         </div>
@@ -89,11 +110,13 @@ export default function Period({
             />
           </div>
 
-          {/* Calendar Skeleton */}
-          <div className="flex h-full gap-10">
-            <div className="h-full flex-1 rounded bg-slate-100" />
-            <div className="h-full flex-1 rounded bg-slate-100" />
-          </div>
+          <Calendar
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
 
           {/* Time inputs */}
           <div className="flex w-full items-center justify-center gap-3">
@@ -116,11 +139,15 @@ export default function Period({
 
       {/* Buttons */}
       <div className="mt-3 flex gap-2 self-end">
-        <Button variant="secondary">Cancelar</Button>
+        <PopoverClose>
+          <Button variant="secondary">Cancelar</Button>
+        </PopoverClose>
 
-        <Button form="date-range-form" type="submit">
-          Aplicar
-        </Button>
+        <PopoverClose>
+          <Button form="date-range-form" type="submit">
+            Aplicar
+          </Button>
+        </PopoverClose>
       </div>
     </div>
   )
