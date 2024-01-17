@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { shortcutPeriods } from '@/lib/date-functions'
+import { getDateWithCustomTime, shortcutPeriods } from '@/lib/date-functions'
 import { PopoverClose } from '@radix-ui/react-popover'
 import { ArrowRight } from 'lucide-react'
 import moment from 'moment/moment'
@@ -15,26 +15,28 @@ interface PeriodProps {
 }
 
 export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
-  const [date, setDate] = useState<DateRange>(popoverPeriod)
+  const [period, setPeriod] = useState<DateRange>(popoverPeriod)
   const { register, handleSubmit, setValue } = useForm()
 
   function handleClickShortcutPeriod(generatePeriod: () => DateRange) {
-    const period = generatePeriod()
-    setDate(period)
+    const shortcutPeriod = generatePeriod()
+    setPeriod(shortcutPeriod)
 
     // Make the HTTP Request here
-    const startDateMoment = moment(period.from, 'DD/MM/YYYY HH:mm:ss.SSS')
-    const endDateMoment = moment(period.to, 'DD/MM/YYYY HH:mm:ss.SSS')
+    const startDateMoment = moment(
+      shortcutPeriod.from,
+      'DD/MM/YYYY HH:mm:ss.SSS',
+    )
+    const endDateMoment = moment(shortcutPeriod.to, 'DD/MM/YYYY HH:mm:ss.SSS')
     const ISODateFrom = startDateMoment.toISOString()
     const ISODateTo = endDateMoment.toISOString()
 
-    console.log({
-      from: ISODateFrom,
-      to: ISODateTo,
-    })
+    console.log(ISODateFrom)
+    console.log(ISODateTo)
   }
 
   function handleApply(data: any) {
+    // Tratamento dos valores dos inputs
     const startDateString = data.dateFrom + ' ' + data.timeFrom
     const endDateString = data.dateTo + ' ' + data.timeTo
     const startDateMoment = moment(startDateString, 'DD/MM/YYYY HH:mm:ss.SSS')
@@ -42,7 +44,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
     const startDate = startDateMoment.toDate()
     const endDate = endDateMoment.toDate()
 
-    setDate({
+    setPeriod({
       from: startDate,
       to: endDate,
     })
@@ -51,19 +53,17 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
     const ISODateFrom = startDateMoment.toISOString()
     const ISODateTo = endDateMoment.toISOString()
 
-    console.log({
-      from: ISODateFrom,
-      to: ISODateTo,
-    })
+    console.log(ISODateFrom)
+    console.log(ISODateTo)
   }
 
   useEffect(() => {
-    onChangePeriod(date)
-    setValue('dateFrom', moment(popoverPeriod.from).format('DD/MM/YYYY'))
-    setValue('dateTo', moment(popoverPeriod.to).format('DD/MM/YYYY'))
-    setValue('timeFrom', moment(popoverPeriod.from).format('HH:mm:ss.SSS'))
-    setValue('timeTo', moment(popoverPeriod.to).format('HH:mm:ss.SSS'))
-  }, [date, onChangePeriod, popoverPeriod, setValue])
+    onChangePeriod(period)
+    setValue('dateFrom', moment(popoverPeriod?.from).format('DD/MM/YYYY'))
+    setValue('dateTo', moment(popoverPeriod?.to).format('DD/MM/YYYY'))
+    setValue('timeFrom', moment(popoverPeriod?.from).format('HH:mm:ss.SSS'))
+    setValue('timeTo', moment(popoverPeriod?.to).format('HH:mm:ss.SSS'))
+  }, [period])
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -100,6 +100,12 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
               placeholder="dd/mm/aaaa"
               className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('dateFrom')}
+              onBlur={(e) =>
+                setPeriod({
+                  from: moment(e.target.value, 'DD/MM/YYYY').toDate(),
+                  to: period.to,
+                })
+              }
             />
             <ArrowRight className="w-10 text-slate-400" />
             <InputMask
@@ -107,14 +113,20 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
               placeholder="dd/mm/aaaa"
               className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('dateTo')}
+              onBlur={(e) =>
+                setPeriod({
+                  from: period.from,
+                  to: moment(e.target.value, 'DD/MM/YYYY').toDate(),
+                })
+              }
             />
           </div>
 
           <Calendar
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
+            defaultMonth={period?.from}
+            selected={period}
+            onSelect={setPeriod}
             numberOfMonths={2}
           />
 
@@ -125,6 +137,12 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
               placeholder="00:00:00.000"
               className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('timeFrom')}
+              onBlur={(e) =>
+                setPeriod({
+                  from: getDateWithCustomTime(period.from, e.target.value),
+                  to: period.to,
+                })
+              }
             />
             <ArrowRight className="w-10 text-slate-400" />
             <InputMask
@@ -132,6 +150,12 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
               placeholder="00:00:00.000"
               className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
               {...register('timeTo')}
+              onBlur={(e) =>
+                setPeriod({
+                  from: period.from,
+                  to: getDateWithCustomTime(period.to, e.target.value),
+                })
+              }
             />
           </div>
         </form>

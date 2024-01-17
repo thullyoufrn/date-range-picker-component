@@ -65,6 +65,21 @@ function getLastYearPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
+export function getDateWithCustomTime(date: Date, customTime: string): Date {
+  const momentDate = moment(date)
+
+  const momentWithTime = momentDate.set({
+    hour: moment(customTime, 'HH:mm:ss.SSS').hour(),
+    minute: moment(customTime, 'HH:mm:ss.SSS').minute(),
+    second: moment(customTime, 'HH:mm:ss.SSS').second(),
+    millisecond: moment(customTime, 'HH:mm:ss.SSS').millisecond(),
+  })
+
+  const resultDate = momentWithTime.toDate()
+
+  return resultDate
+}
+
 /* Função para formatar um date range para  
 o modelo utilizado nos snapshots e popover */
 export function formatPeriodToSnapshot(

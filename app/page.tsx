@@ -23,10 +23,10 @@ export default function DatePicker() {
     to: moment(new Date()).endOf('day').toDate(),
   })
 
-  const dateFrom = moment(popoverPeriod.from).format('DD/MM/YYYY')
-  const timeFrom = moment(popoverPeriod.from).format('HH:mm:ss.SSS')
-  const dateTo = moment(popoverPeriod.to).format('DD/MM/YYYY')
-  const timeTo = moment(popoverPeriod.to).format('HH:mm:ss.SSS')
+  const dateFrom = moment(popoverPeriod?.from).format('DD/MM/YYYY')
+  const timeFrom = moment(popoverPeriod?.from).format('HH:mm:ss.SSS')
+  const dateTo = moment(popoverPeriod?.to).format('DD/MM/YYYY')
+  const timeTo = moment(popoverPeriod?.to).format('HH:mm:ss.SSS')
 
   const formattedPeriod = formatPeriodToSnapshot(
     dateFrom,
