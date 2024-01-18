@@ -76,7 +76,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
                 <Button
                   variant="ghost"
                   onClick={() => handleClickShortcutPeriod(generatePeriod)}
-                  className="flex w-full justify-start font-normal"
+                  className="text-primaria-700 hover:text-primaria-700 hover:bg-primaria-300/50 flex w-full justify-start font-normal"
                 >
                   {label}
                 </Button>
@@ -164,7 +164,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
       {/* Buttons */}
       <div className="mt-3 flex gap-2 self-end">
         <PopoverClose>
-          <Button variant="secondary">Cancelar</Button>
+          <Button variant="outline">Cancelar</Button>
         </PopoverClose>
 
         <PopoverClose>

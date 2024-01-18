@@ -47,8 +47,7 @@ export default function DatePicker() {
             id="date"
             variant={'outline'}
             className={cn(
-              'min-w-[300px] justify-start text-left font-normal',
-              !popoverPeriod && 'text-muted-foreground',
+              'bg-primaria-700 hover:border-primaria-900 hover:bg-primaria-900 min-w-[300px] justify-start text-left font-normal text-white hover:text-white',
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
