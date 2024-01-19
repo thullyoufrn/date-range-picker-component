@@ -1,9 +1,9 @@
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { ptBR } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
+
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -16,7 +16,6 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      locale={ptBR}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-8 sm:space-y-0',
@@ -26,10 +25,10 @@ function Calendar({
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
           buttonVariants({ variant: 'outline' }),
-          'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-slate-950 border-slate-400',
+          'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
         ),
-        nav_button_previous: 'absolute left-1',
-        nav_button_next: 'absolute right-1',
+        nav_button_previous: 'border-slate-500 text-slate-500 absolute left-1',
+        nav_button_next: 'border-slate-500 text-slate-500 absolute right-1',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell:
@@ -44,7 +43,7 @@ function Calendar({
         day_selected:
           'bg-primaria-700 text-white hover:bg-primaria-700 hover:text-white focus:bg-primaria-700 focus:text-white dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50 dark:hover:text-slate-900 dark:focus:bg-slate-50 dark:focus:text-slate-900',
         day_today:
-          'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-50',
+          'font-bold text-primaria-700 dark:bg-slate-800 dark:text-slate-50',
         day_outside:
           'day-outside text-slate-500 opacity-50 aria-selected:bg-slate-100/50 aria-selected:text-slate-500 aria-selected:opacity-30 dark:text-slate-400 dark:aria-selected:bg-slate-800/50 dark:aria-selected:text-slate-400',
         day_disabled: 'text-slate-500 opacity-50 dark:text-slate-400',

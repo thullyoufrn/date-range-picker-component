@@ -35,7 +35,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
     console.log(ISODateTo)
   }
 
-  function handleApply(data: any) {
+  function applyPeriod(data: any) {
     // Tratamento dos valores dos inputs
     const startDateString = data.dateFrom + ' ' + data.timeFrom
     const endDateString = data.dateTo + ' ' + data.timeTo
@@ -59,10 +59,10 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
 
   useEffect(() => {
     onChangePeriod(period)
-    setValue('dateFrom', moment(popoverPeriod?.from).format('DD/MM/YYYY'))
-    setValue('dateTo', moment(popoverPeriod?.to).format('DD/MM/YYYY'))
-    setValue('timeFrom', moment(popoverPeriod?.from).format('HH:mm:ss.SSS'))
-    setValue('timeTo', moment(popoverPeriod?.to).format('HH:mm:ss.SSS'))
+    setValue('dateFrom', moment(period?.from).format('DD/MM/YYYY'))
+    setValue('dateTo', moment(period?.to).format('DD/MM/YYYY'))
+    setValue('timeFrom', moment(period?.from).format('HH:mm:ss.SSS'))
+    setValue('timeTo', moment(period?.to).format('HH:mm:ss.SSS'))
   }, [period])
 
   return (
@@ -76,7 +76,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
                 <Button
                   variant="ghost"
                   onClick={() => handleClickShortcutPeriod(generatePeriod)}
-                  className="text-primaria-700 hover:text-primaria-700 hover:bg-primaria-300/50 flex w-full justify-start font-normal"
+                  className="flex w-full justify-start font-normal text-primaria-700 hover:bg-primaria-300/50 hover:text-primaria-700"
                 >
                   {label}
                 </Button>
@@ -90,7 +90,7 @@ export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
 
         <form
           id="date-range-form"
-          onSubmit={handleSubmit(handleApply)}
+          onSubmit={handleSubmit(applyPeriod)}
           className="flex flex-col gap-3"
         >
           {/* Date inputs */}
