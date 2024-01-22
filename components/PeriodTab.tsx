@@ -9,12 +9,15 @@ import { useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
 import { Calendar } from './ui/calendar'
 
-interface PeriodProps {
+interface PeriodTabProps {
   popoverPeriod: DateRange
   onChangePeriod: (newPeriod: DateRange) => void
 }
 
-export default function Period({ popoverPeriod, onChangePeriod }: PeriodProps) {
+export default function PeriodTab({
+  popoverPeriod,
+  onChangePeriod,
+}: PeriodTabProps) {
   const [period, setPeriod] = useState<DateRange>(popoverPeriod)
   const { register, handleSubmit, setValue } = useForm()
 

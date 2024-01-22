@@ -1,16 +1,16 @@
 import clsx from 'clsx'
 import { Check, Clock, X } from 'lucide-react'
-import { RequestStatus } from './Processing'
+import { RequestStatus } from './ExecutionsTab'
 import { Toggle } from './ui/toggle'
 
-type Snapshot = {
+export interface ISnapshot {
   id: number
   period: string
   status?: string
 }
 
 interface SnapshotProps {
-  snapshot: Snapshot
+  snapshot: ISnapshot
   snapshotPressed: number
   onPressedChange: (id: number) => void
 }

@@ -80,14 +80,19 @@ export function getDateWithCustomTime(date: Date, customTime: string): Date {
   return resultDate
 }
 
-/* Função para formatar um date range para  
-o modelo utilizado nos snapshots e popover */
-export function formatPeriodToSnapshot(
-  dateFrom: string,
-  timeFrom: string,
-  dateTo: string,
-  timeTo: string,
-) {
+// Função para formatar uma data para o modelo utilizado no popover
+export function formatDate(date: Date): string {
+  const formattedDate = moment(date).format('DD/MM/YYYY HH:mm:ss.SSS')
+  return formattedDate
+}
+
+// Função para formatar um período para o modelo utilizado no popover
+export function formatPeriod(period) {
+  const dateFrom = moment(period?.from).format('DD/MM/YYYY')
+  const timeFrom = moment(period?.from).format('HH:mm:ss.SSS')
+  const dateTo = moment(period?.to).format('DD/MM/YYYY')
+  const timeTo = moment(period?.to).format('HH:mm:ss.SSS')
+
   const dateTimeFormat = 'DD/MM/YYYY HH:mm:ss.SSS'
 
   const startDateString = dateFrom + ' ' + timeFrom
