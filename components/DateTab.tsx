@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
+import { getDateWithCustomTime } from '@/lib/date-functions'
 import { PopoverClose } from '@radix-ui/react-popover'
+import { ptBR } from 'date-fns/locale'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
 import { Calendar } from './ui/calendar'
-import { getDateWithCustomTime } from '@/lib/date-functions'
 
 interface DateTabProps {
   popoverDate: Date
@@ -17,14 +18,12 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
   const { register, handleSubmit, setValue } = useForm()
 
   function applyDate(data: any) {
-    // Tratamento dos valores dos inputs
     const dateString = data.date + ' ' + data.time
     const dateMoment = moment(dateString, 'DD/MM/YYYY HH:mm:ss.SSS')
     const newDate = dateMoment.toDate()
-
     setDate(newDate)
 
-    // Make the HTTP Request here
+    // Fazer a requisição aqui
     const ISODateFrom = dateMoment.toISOString()
     console.log(ISODateFrom)
   }
@@ -33,12 +32,13 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
     onChangeDate(date)
     setValue('date', moment(date).format('DD/MM/YYYY'))
     setValue('time', moment(date).format('HH:mm:ss.SSS'))
+    // eslint-disable-next-line
   }, [date])
 
   return (
     <div className="flex flex-col items-center gap-2">
       <form
-        id="date-range-form"
+        id="date-form"
         onSubmit={handleSubmit(applyDate)}
         className="flex flex-col gap-3"
       >
@@ -47,14 +47,15 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
           placeholder="dd/mm/aaaa"
           className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
           {...register('date')}
-          onBlur={(e) => setDate(moment(e.target.value).toDate())}
+          onBlur={(e) => setDate(moment(e.target.value, 'DD/MM/YYYY').toDate())}
         />
 
         <Calendar
           mode="single"
-          defaultMonth={date}
           selected={date}
           onSelect={setDate}
+          initialFocus
+          locale={ptBR}
         />
 
         <InputMask
@@ -73,7 +74,7 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
         </PopoverClose>
 
         <PopoverClose>
-          <Button form="date-range-form" type="submit">
+          <Button form="date-form" type="submit">
             Aplicar
           </Button>
         </PopoverClose>

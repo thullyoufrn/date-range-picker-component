@@ -20,6 +20,11 @@ export default function Snapshot({
   snapshotPressed,
   onPressedChange,
 }: SnapshotProps) {
+  // Adicionar condicional para verificar se o snapshot possui dataFinal
+  // Caso exista, manipular considerando o snapshot como sendo um período
+  // Caso exista, manipular considerando o snapshot como sendo uma data
+  // Após fazer a manipulação, renderizar no componenten de abaixo
+
   function handlePressedChange() {
     onPressedChange(snapshot.id)
   }

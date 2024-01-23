@@ -36,11 +36,8 @@ export default function DateModePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          id="date"
           variant={'outline'}
-          className={cn(
-            'min-w-[300px] justify-start bg-primaria-700 text-left font-normal text-white hover:border-primaria-900 hover:bg-primaria-900 hover:text-white',
-          )}
+          className="min-w-[300px] justify-start bg-primaria-700 text-left font-normal text-white hover:border-primaria-900 hover:bg-primaria-900 hover:text-white"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
 

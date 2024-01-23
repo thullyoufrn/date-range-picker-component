@@ -1,3 +1,5 @@
+import { PopoverClose } from '@radix-ui/react-popover'
+import moment from 'moment'
 import { useState } from 'react'
 import Snapshot, { ISnapshot } from './Snapshot'
 import { Button } from './ui/button'
@@ -17,11 +19,13 @@ export default function SnapshotsTab({
     }
   }
 
-  function handleApply() {
+  function applySnapshot() {
     const snapshotChoosed = snapshots.find((snapshot) => {
       return snapshot.id === snapshotPressed
     })
 
+    // Fazer a requisição aqui
+    const ISOSnapshot = moment(snapshotChoosed.period, '')
     console.log(snapshotChoosed)
   }
 
@@ -41,11 +45,15 @@ export default function SnapshotsTab({
       </div>
 
       <div className="mt-3 flex gap-2 self-end">
-        <Button variant="secondary">Cancelar</Button>
+        <PopoverClose>
+          <Button variant="outline">Cancelar</Button>
+        </PopoverClose>
 
-        <Button disabled={!snapshotPressed} onClick={handleApply}>
-          Aplicar
-        </Button>
+        <PopoverClose>
+          <Button disabled={!snapshotPressed} onClick={applySnapshot}>
+            Aplicar
+          </Button>
+        </PopoverClose>
       </div>
     </div>
   )
