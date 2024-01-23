@@ -1,7 +1,10 @@
 import moment from 'moment'
 import * as ReactDayPicker from 'react-day-picker'
 
-// Função para obter o período de hoje
+/**
+ * Obtém o período correspondente ao dia atual, do início ao fim do dia.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 export function getTodayPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().startOf('day').toDate()
@@ -9,7 +12,10 @@ export function getTodayPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período de ontem
+/**
+ * Obtém o período correspondente ao dia anterior, do início ao fim do dia.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getYesterdayPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().subtract(1, 'day').startOf('day').toDate()
@@ -17,7 +23,10 @@ function getYesterdayPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período dos últimos 7 dias
+/**
+ * Obtém o período dos últimos 7 dias, do início ao fim do dia atual.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getLast7DaysPeriod(): ReactDayPicker.DateRange {
   const now = moment()
   const from = now.clone().subtract(6, 'days').startOf('day').toDate()
@@ -25,7 +34,10 @@ function getLast7DaysPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período dos últimos 30 dias
+/**
+ * Obtém o período dos últimos 30 dias, do início ao fim do dia atual.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getLast30DaysPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(29, 'days').startOf('day').toDate()
@@ -33,7 +45,10 @@ function getLast30DaysPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período deste mês
+/**
+ * Obtém o período correspondente ao mês atual, do início ao fim do mês.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getThisMonthPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().startOf('month').toDate()
@@ -41,7 +56,10 @@ function getThisMonthPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período do último mês
+/**
+ * Obtém o período correspondente ao mês anterior, do início ao fim do mês anterior.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getLastMonthPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(1, 'month').startOf('month').toDate()
@@ -49,7 +67,10 @@ function getLastMonthPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período deste ano
+/**
+ * Obtém o período correspondente ao ano atual, do início ao fim do ano.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getThisYearPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().startOf('year').toDate()
@@ -57,7 +78,10 @@ function getThisYearPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para obter o período do último ano
+/**
+ * Obtém o período correspondente ao ano anterior, do início ao fim do ano anterior.
+ * @returns {ReactDayPicker.DateRange} Objeto com as propriedades 'from' e 'to'.
+ */
 function getLastYearPeriod(): ReactDayPicker.DateRange {
   const today = moment()
   const from = today.clone().subtract(1, 'year').startOf('year').toDate()
@@ -65,7 +89,12 @@ function getLastYearPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
-// Função para definir o tempo (horário) de uma determinada data
+/**
+ * Define o horário personalizado para uma data específica.
+ * @param {Date} date - A data a ser ajustada.
+ * @param {string} customTime - O horário no formato 'HH:mm:ss.SSS'.
+ * @returns {Date} A data resultante com o horário personalizado.
+ */
 export function getDateWithCustomTime(date: Date, customTime: string): Date {
   const momentDate = moment(date)
 
@@ -81,14 +110,22 @@ export function getDateWithCustomTime(date: Date, customTime: string): Date {
   return resultDate
 }
 
-// Função para formatar uma data para o modelo utilizado no popover
+/**
+ * Formata uma data para o modelo 'DD/MM/YYYY HH:mm:ss.SSS'.
+ * @param {Date} date - A data a ser formatada.
+ * @returns {string} A data formatada.
+ */
 export function formatDate(date: Date): string {
   const formattedDate = moment(date).format('DD/MM/YYYY HH:mm:ss.SSS')
   return formattedDate
 }
 
-// Função para formatar um período para o modelo utilizado no popover
-export function formatPeriod(period) {
+/**
+ * Formata um período para o modelo 'DD-MM-YYYY HH:mm:ss.SSS - DD-MM-YYYY HH:mm:ss.SSS'.
+ * @param {ReactDayPicker.DateRange} period - O período a ser formatado.
+ * @returns {string} O período formatado.
+ */
+export function formatPeriod(period: ReactDayPicker.DateRange): string {
   const dateFrom = moment(period?.from).format('DD/MM/YYYY')
   const timeFrom = moment(period?.from).format('HH:mm:ss.SSS')
   const dateTo = moment(period?.to).format('DD/MM/YYYY')
@@ -110,6 +147,9 @@ export function formatPeriod(period) {
   return dateRangeString
 }
 
+/**
+ * Lista de atalhos de períodos pré-definidos.
+ */
 export const shortcutPeriods = [
   {
     id: 1,
