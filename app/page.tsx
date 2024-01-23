@@ -36,7 +36,7 @@ const executions = data.map((snapshot, index) => {
 export default function Page() {
   return (
     <DatePicker
-      selectionMode="date"
+      selectionMode="period"
       snapshots={snapshots}
       executions={executions}
     />

@@ -2,6 +2,7 @@ import ExecutionsTab from '@/components/ExecutionsTab'
 import { formatDate } from '@/lib/date-functions'
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
+import moment from 'moment'
 import { useState } from 'react'
 import DateTab from './DateTab'
 import { ISnapshot } from './Snapshot'
@@ -19,7 +20,9 @@ export default function DateModePicker({
   snapshots,
   executions,
 }: DateModePickerProps) {
-  const [popoverDate, setPopoverDate] = useState(new Date())
+  const [popoverDate, setPopoverDate] = useState(
+    moment(new Date()).startOf('day').toDate(),
+  )
 
   const formattedDate = formatDate(popoverDate)
   const hasSnapshots = snapshots.length > 0

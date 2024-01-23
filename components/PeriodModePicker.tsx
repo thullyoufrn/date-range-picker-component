@@ -70,7 +70,7 @@ export default function PeriodModePicker({
 
                   {hasSnapshots && (
                     <TabsTrigger value="snapshots" className="flex-1">
-                      SnapshotsTab
+                      Snapshots
                     </TabsTrigger>
                   )}
 

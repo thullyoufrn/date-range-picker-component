@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputMask from 'react-input-mask'
 import { Calendar } from './ui/calendar'
+import { getDateWithCustomTime } from '@/lib/date-functions'
 
 interface DateTabProps {
   popoverDate: Date
@@ -45,8 +46,8 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
           mask="99/99/9999"
           placeholder="dd/mm/aaaa"
           className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-          {...register('dateFrom')}
-          onBlur={() => setDate(date)}
+          {...register('date')}
+          onBlur={(e) => setDate(moment(e.target.value).toDate())}
         />
 
         <Calendar
@@ -60,8 +61,8 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
           mask="99:99:99.999"
           placeholder="00:00:00.000"
           className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center text-sm outline-none ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-          {...register('timeFrom')}
-          onBlur={() => setDate(date)}
+          {...register('time')}
+          onBlur={(e) => setDate(getDateWithCustomTime(date, e.target.value))}
         />
       </form>
 

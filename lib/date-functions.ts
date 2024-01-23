@@ -140,9 +140,9 @@ export function formatPeriod(period: ReactDayPicker.DateRange): string {
   const endDateMoment = moment(endDateString, dateTimeFormat)
 
   const dateRangeString =
-    startDateMoment.format('DD-MM-YYYY HH:mm:ss.SSS') +
+    startDateMoment.format('DD/MM/YYYY HH:mm:ss.SSS') +
     ' - ' +
-    endDateMoment.format('DD-MM-YYYY HH:mm:ss.SSS')
+    endDateMoment.format('DD/MM/YYYY HH:mm:ss.SSS')
 
   return dateRangeString
 }
