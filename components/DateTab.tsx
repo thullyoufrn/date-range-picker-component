@@ -31,8 +31,8 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
 
   useEffect(() => {
     onChangeDate(date)
-    setValue('dateFrom', moment(date).format('DD/MM/YYYY'))
-    setValue('timeFrom', moment(date).format('HH:mm:ss.SSS'))
+    setValue('date', moment(date).format('DD/MM/YYYY'))
+    setValue('time', moment(date).format('HH:mm:ss.SSS'))
   }, [date])
 
   return (
