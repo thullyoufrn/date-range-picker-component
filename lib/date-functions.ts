@@ -65,6 +65,7 @@ function getLastYearPeriod(): ReactDayPicker.DateRange {
   return { from, to }
 }
 
+// Função para definir o tempo (horário) de uma determinada data
 export function getDateWithCustomTime(date: Date, customTime: string): Date {
   const momentDate = moment(date)
 
