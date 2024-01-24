@@ -5,7 +5,8 @@ import { Toggle } from './ui/toggle'
 
 export interface ISnapshot {
   id: number
-  period: string
+  startDate: string
+  finalDate: string | null
   status?: string
 }
 
@@ -20,10 +21,11 @@ export default function Snapshot({
   snapshotPressed,
   onPressedChange,
 }: SnapshotProps) {
-  // Adicionar condicional para verificar se o snapshot possui dataFinal
-  // Caso exista, manipular considerando o snapshot como sendo um período
-  // Caso exista, manipular considerando o snapshot como sendo uma data
-  // Após fazer a manipulação, renderizar no componenten de abaixo
+  let snapshotContent = snapshot.startDate
+
+  if (snapshot.finalDate) {
+    snapshotContent += ` - ${snapshot.finalDate}`
+  }
 
   function handlePressedChange() {
     onPressedChange(snapshot.id)
@@ -37,7 +39,7 @@ export default function Snapshot({
         pressed={snapshot.id === snapshotPressed}
         onPressedChange={handlePressedChange}
       >
-        {snapshot.period}
+        {snapshotContent}
       </Toggle>
 
       <X

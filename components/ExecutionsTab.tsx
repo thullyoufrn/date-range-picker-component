@@ -1,3 +1,4 @@
+import { PopoverClose } from '@radix-ui/react-popover'
 import { useState } from 'react'
 import Snapshot, { ISnapshot } from './Snapshot'
 import { Button } from './ui/button'
@@ -13,45 +14,49 @@ export default function ExecutionsTab({
 }: {
   executions: ISnapshot[]
 }) {
-  const [snapshotPressed, setSnapshotPressed] = useState(null)
+  const [executionPressed, setExecutionPressed] = useState(null)
 
-  function onPressSnapshot(id: number) {
-    if (id === snapshotPressed) {
-      setSnapshotPressed(null)
+  function onPressExecution(id: number) {
+    if (id === executionPressed) {
+      setExecutionPressed(null)
     } else {
-      setSnapshotPressed(id)
+      setExecutionPressed(id)
     }
   }
 
-  function handleApply() {
-    const snapshotChoosed = executions.find((snapshot) => {
-      return snapshot.id === snapshotPressed
+  function applyExecution() {
+    const executionChoosed = executions.find((execution) => {
+      return execution.id === executionPressed
     })
 
-    console.log(snapshotChoosed)
+    console.log(executionChoosed)
   }
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        {executions.map((snapshot, index) => {
+        {executions.map((execution, index) => {
           return (
             <Snapshot
               key={index}
-              snapshot={snapshot}
-              snapshotPressed={snapshotPressed}
-              onPressedChange={onPressSnapshot}
+              snapshot={execution}
+              snapshotPressed={executionPressed}
+              onPressedChange={onPressExecution}
             />
           )
         })}
       </div>
 
       <div className="mt-3 flex gap-2 self-end">
-        <Button variant="secondary">Cancelar</Button>
+        <PopoverClose>
+          <Button variant="outline">Cancelar</Button>
+        </PopoverClose>
 
-        <Button disabled={!snapshotPressed} onClick={handleApply}>
-          Aplicar
-        </Button>
+        <PopoverClose>
+          <Button disabled={!executionPressed} onClick={applyExecution}>
+            Aplicar
+          </Button>
+        </PopoverClose>
       </div>
     </div>
   )

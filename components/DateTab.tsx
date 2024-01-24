@@ -52,9 +52,10 @@ export default function DateTab({ popoverDate, onChangeDate }: DateTabProps) {
 
         <Calendar
           mode="single"
+          initialFocus
+          defaultMonth={date}
           selected={date}
           onSelect={setDate}
-          initialFocus
           locale={ptBR}
         />
 

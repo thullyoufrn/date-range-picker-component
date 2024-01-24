@@ -1,44 +1,145 @@
 'use client'
 
 import DatePicker from '@/components/DatePicker'
-import { RequestStatus } from '@/components/ExecutionsTab'
+import { convertDatesToSnapshotFormat } from '@/lib/date-functions'
 
-const data = [
-  '29-12-2023 12:20:58.886 - 29-12-2023 12:20:58.886',
-  '01-01-2024 12:20:58.886 - 02-01-2024 12:20:58.886',
-  '02-01-2024 12:20:58.886 - 03-01-2024 12:20:58.886',
-  '04-01-2024 12:20:58.886 - 05-01-2024 12:20:58.886',
-  '05-01-2024 12:20:58.886 - 06-01-2024 12:20:58.886',
+const dateExecutions = [
+  {
+    id: 1,
+    startDate: '2024-01-24T00:00:00.000Z',
+    finalDate: null,
+    status: 'Canceled',
+  },
+  {
+    id: 2,
+    startDate: '2024-01-25T00:00:00.000Z',
+    finalDate: null,
+    status: 'Pending',
+  },
+  {
+    id: 3,
+    startDate: '2024-01-26T00:00:00.000Z',
+    finalDate: null,
+    status: 'Canceled',
+  },
+  {
+    id: 4,
+    startDate: '2024-01-27T00:00:00.000Z',
+    finalDate: null,
+    status: 'Completed',
+  },
+  {
+    id: 5,
+    startDate: '2024-01-28T00:00:00.000Z',
+    finalDate: null,
+    status: 'Pending',
+  },
+  {
+    id: 6,
+    startDate: '2024-01-29T00:00:00.000Z',
+    finalDate: null,
+    status: 'Completed',
+  },
+  {
+    id: 7,
+    startDate: '2024-01-30T00:00:00.000Z',
+    finalDate: null,
+    status: 'Canceled',
+  },
+  {
+    id: 8,
+    startDate: '2024-01-31T00:00:00.000Z',
+    finalDate: null,
+    status: 'Pending',
+  },
+  {
+    id: 9,
+    startDate: '2024-02-01T00:00:00.000Z',
+    finalDate: null,
+    status: 'Completed',
+  },
+  {
+    id: 10,
+    startDate: '2024-02-02T00:00:00.000Z',
+    finalDate: null,
+    status: 'Canceled',
+  },
 ]
+const dateSnapshots = dateExecutions.map(({ status, ...rest }) => rest)
 
-const snapshots = data.map((snapshot, index) => ({
-  id: index + 1,
-  period: snapshot,
-}))
+const periodExecutions = [
+  {
+    id: 1,
+    startDate: '2024-01-24T00:00:00.000Z',
+    finalDate: '2024-01-26T12:00:00.000Z',
+    status: 'Canceled',
+  },
+  {
+    id: 2,
+    startDate: '2024-01-25T00:00:00.000Z',
+    finalDate: '2024-01-27T12:00:00.000Z',
+    status: 'Pending',
+  },
+  {
+    id: 3,
+    startDate: '2024-01-26T00:00:00.000Z',
+    finalDate: '2024-01-28T18:30:00.000Z',
+    status: 'Canceled',
+  },
+  {
+    id: 4,
+    startDate: '2024-01-27T00:00:00.000Z',
+    finalDate: '2024-02-01T18:30:00.000Z',
+    status: 'Completed',
+  },
+  {
+    id: 5,
+    startDate: '2024-01-28T00:00:00.000Z',
+    finalDate: '2024-02-02T08:45:00.000Z',
+    status: 'Pending',
+  },
+  {
+    id: 6,
+    startDate: '2024-01-29T00:00:00.000Z',
+    finalDate: '2024-02-03T08:45:00.000Z',
+    status: 'Completed',
+  },
+  {
+    id: 7,
+    startDate: '2024-01-30T00:00:00.000Z',
+    finalDate: '2024-02-04T14:20:00.000Z',
+    status: 'Canceled',
+  },
+  {
+    id: 8,
+    startDate: '2024-01-31T00:00:00.000Z',
+    finalDate: '2024-02-05T14:20:00.000Z',
+    status: 'Pending',
+  },
+  {
+    id: 9,
+    startDate: '2024-02-01T00:00:00.000Z',
+    finalDate: '2024-02-06T18:30:00.000Z',
+    status: 'Completed',
+  },
+  {
+    id: 10,
+    startDate: '2024-02-02T00:00:00.000Z',
+    finalDate: '2024-02-07T20:10:00.000Z',
+    status: 'Canceled',
+  },
+]
+const periodSnapshots = periodExecutions.map(({ status, ...rest }) => rest)
 
-const executions = data.map((snapshot, index) => {
-  const random = Math.random()
-  let status = RequestStatus.CANCELED
-
-  if (random >= 0.3 && random < 0.7) {
-    status = RequestStatus.PENDING
-  } else if (random >= 0.7) {
-    status = RequestStatus.COMPLETED
-  }
-
-  return {
-    id: index + 1,
-    period: snapshot,
-    status,
-  }
-})
+const snapshotsFormatted = convertDatesToSnapshotFormat(periodSnapshots)
+const executionsFormatted = convertDatesToSnapshotFormat(periodExecutions)
 
 export default function Page() {
   return (
     <DatePicker
       selectionMode="period"
-      snapshots={snapshots}
-      executions={executions}
+      snapshots={snapshotsFormatted}
+      executions={executionsFormatted}
     />
   )
 }

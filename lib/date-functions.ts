@@ -148,6 +148,31 @@ export function formatPeriod(period: ReactDayPicker.DateRange): string {
 }
 
 /**
+ * Converte um array de objetos de data do formato ISO para um formato personalizado de snapshot.
+ *
+ * @param {Array} dateObjects - Um array de objetos de data com propriedades: id, startDate, finalDate, status.
+ * @returns {Array} Um array de objetos de data com startDate e finalDate formatados como 'DD/MM/YYYY HH:mm:ss.SSS'.
+ */
+export function convertDatesToSnapshotFormat(dateObjects) {
+  return dateObjects.map((obj) => {
+    const formattedStartDate = moment(obj.startDate).format(
+      'DD/MM/YYYY HH:mm:ss.SSS',
+    )
+
+    const formattedFinalDate = obj.finalDate
+      ? moment(obj.finalDate).format('DD/MM/YYYY HH:mm:ss.SSS')
+      : null
+
+    return {
+      id: obj.id,
+      startDate: formattedStartDate,
+      finalDate: formattedFinalDate,
+      status: obj.status ? obj.status : null,
+    }
+  })
+}
+
+/**
  * Lista de atalhos de períodos pré-definidos.
  */
 export const shortcutPeriods = [

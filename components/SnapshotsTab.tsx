@@ -1,5 +1,4 @@
 import { PopoverClose } from '@radix-ui/react-popover'
-import moment from 'moment'
 import { useState } from 'react'
 import Snapshot, { ISnapshot } from './Snapshot'
 import { Button } from './ui/button'
@@ -25,7 +24,6 @@ export default function SnapshotsTab({
     })
 
     // Fazer a requisição aqui
-    const ISOSnapshot = moment(snapshotChoosed.period, '')
     console.log(snapshotChoosed)
   }
 

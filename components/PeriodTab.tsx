@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { getDateWithCustomTime, shortcutPeriods } from '@/lib/date-functions'
 import { PopoverClose } from '@radix-ui/react-popover'
+import { ptBR } from 'date-fns/locale'
 import { ArrowRight } from 'lucide-react'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
@@ -25,7 +26,7 @@ export default function PeriodTab({
     const shortcutPeriod = generatePeriod()
     setPeriod(shortcutPeriod)
 
-    // Make the HTTP Request here
+    // Fazer requisição aqui
     const startDateMoment = moment(
       shortcutPeriod.from,
       'DD/MM/YYYY HH:mm:ss.SSS',
@@ -52,7 +53,7 @@ export default function PeriodTab({
       to: endDate,
     })
 
-    // Make the HTTP Request here
+    // Fazer requisição aqui
     const ISODateFrom = startDateMoment.toISOString()
     const ISODateTo = endDateMoment.toISOString()
 
@@ -92,7 +93,7 @@ export default function PeriodTab({
         <div className="w-px bg-slate-200" />
 
         <form
-          id="date-range-form"
+          id="period-form"
           onSubmit={handleSubmit(applyPeriod)}
           className="flex flex-col gap-3"
         >
@@ -127,10 +128,12 @@ export default function PeriodTab({
 
           <Calendar
             mode="range"
+            initialFocus
             defaultMonth={period?.from}
+            numberOfMonths={2}
             selected={period}
             onSelect={setPeriod}
-            numberOfMonths={2}
+            locale={ptBR}
           />
 
           {/* Time inputs */}
@@ -171,7 +174,7 @@ export default function PeriodTab({
         </PopoverClose>
 
         <PopoverClose>
-          <Button form="date-range-form" type="submit">
+          <Button form="period-form" type="submit">
             Aplicar
           </Button>
         </PopoverClose>
