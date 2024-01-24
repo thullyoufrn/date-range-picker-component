@@ -18,3 +18,4 @@ A versatile and customizable date range picker component for React applications,
 ![Variation 4](/public/period-snapshots-executions.png)
 ![Variation 5](/public/snapshots-from-date.png)
 ![Variation 6](/public/snapshots-from-period.png)
+![Variation 7](/public/processing-from-period.png)
