@@ -131,13 +131,13 @@ const periodExecutions = [
 ]
 const periodSnapshots = periodExecutions.map(({ status, ...rest }) => rest)
 
-const snapshotsFormatted = convertDatesToSnapshotFormat(periodSnapshots)
-const executionsFormatted = convertDatesToSnapshotFormat(periodExecutions)
+const snapshotsFormatted = convertDatesToSnapshotFormat(dateSnapshots)
+const executionsFormatted = convertDatesToSnapshotFormat(dateExecutions)
 
 export default function Page() {
   return (
     <DatePicker
-      selectionMode="period"
+      selectionMode="date"
       snapshots={snapshotsFormatted}
       executions={executionsFormatted}
     />
