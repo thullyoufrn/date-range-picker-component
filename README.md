@@ -12,9 +12,9 @@ A versatile and customizable date range picker component for React applications,
 
 ## Visual Variations
 
-1. ![Variation 1](/public/only-dates.png)
-2. ![Variation 2](/public/only-period.png)
-3. ![Variation 3](/public/date-snap-exe.png)
-4. ![Variation 4](/public/period-snapshots-executions.png)
-5. ![Variation 5](/public/snapshots-from-date.png)
-6. ![Variation 6](/public/snapshots-from-period.png)
+![Variation 1](/public/only-dates.png)
+![Variation 2](/public/only-period.png)
+![Variation 3](/public/date-snap-exe.png)
+![Variation 4](/public/period-snapshots-executions.png)
+![Variation 5](/public/snapshots-from-date.png)
+![Variation 6](/public/snapshots-from-period.png)
